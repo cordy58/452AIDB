@@ -1,53 +1,52 @@
 sql_create_category_table = """
-    CREATE TABLE categories (
+    CREATE TABLE category (
     category_id INT PRIMARY KEY,
     category_name TEXT
     );
 """
 
-sql_create_menu_table = """
-    CREATE TABLE menu (
-        menu_id INT PRIMARY KEY ,
-        menu_name TEXT,
+sql_create_inventory_table = """
+    CREATE TABLE inventory (
+        item_id INT PRIMARY KEY ,
+        item_name TEXT,
         category_id INT,
         unit_price REAL,
-        FOREIGN KEY (category_id) references categories(category_id)
+        FOREIGN KEY (category_id) references category(category_id) ON UPDATE CASCADE ON DELETE CASCADE
     );
 """
 
-sql_create_customers_table = """
-    CREATE TABLE customers (
+sql_create_customer_table = """
+    CREATE TABLE customer (
     customer_id INT PRIMARY KEY ,
-    firstname TEXT,
-    Lastname TEXT,
-    city TEXT
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT
 );
 """
 
 sql_create_employee_table = """
     CREATE TABLE employee (
-        emp_id INT PRIMARY KEY ,
-        firstname TEXT,
-        Lastname TEXT,
-        hiredate TEXT,
-        branch TEXT );
+        emp_id INT PRIMARY KEY,
+        first_name TEXT,
+        last_name TEXT,
+        hire_date TEXT);
 """
 
 sql_create_orders_table = """
-    CREATE TABLE Orders(
-        orderid INT,
-        orderdate TEXT,
-        menu_id INT,
-        quantity INT DEFAULT 0,
+    CREATE TABLE orders(
+        order_id INT PRIMARY KEY,
         customer_id INT,
-        delivery_platform TEXT,
+        order_date DATETIME,
+        total_price REAL,
+        item_id INT,
+        quantity INT DEFAULT 0,
         emp_id INT,
-        FOREIGN KEY (menu_id) references menu(menu_id)
+        FOREIGN KEY (item_id) references inventory(item_id)
         FOREIGN KEY (customer_id) references customers(customer_id)
         FOREIGN KEY (emp_id) references employee(emp_id)
     );
 """
 
 def get_schema():
-    schema = f"{sql_create_category_table}{sql_create_menu_table}{sql_create_customers_table}{sql_create_employee_table}{sql_create_orders_table}"
+    schema = f"{sql_create_category_table}{sql_create_inventory_table}{sql_create_customer_table}{sql_create_employee_table}{sql_create_orders_table}"
     return schema

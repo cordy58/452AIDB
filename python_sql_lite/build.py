@@ -4,21 +4,21 @@ from db import create_table, create_connection
 from schema import *
 
 
-def select_all_from_menu(conn):
+def select_all_from_inventory(conn):
     """
     Query all rows in the tasks table
     :param conn: the Connection object
     :return:
     """
     cur = conn.cursor()
-    cur.execute("SELECT * FROM menu")
+    cur.execute("SELECT * FROM inventory")
 
     rows = cur.fetchall()
 
     for row in rows:
         print(row)
 
-def insert_to_menu(conn):
+def insert_to_inventory(conn):
     """
     Create a new project into the projects table
     :param conn:
@@ -26,17 +26,19 @@ def insert_to_menu(conn):
     :return: project id
     """
     sql = """
-        INSERT INTO menu VALUES
-        (1, 'Green Tea', '1', 50),
-        (2, 'Thai Tea', '1', 50),
-        (3, 'Jasmine Tea', '1', 50),
-        (4, 'Espresso', '2',55),
-        (5, 'Cappucino', '2',55),
-        (6, 'Latte', '2',55),
-        (7, 'Mocha', '2',55),
-        (8, 'Passion Fruit', '3',60),
-        (9, 'Mango Juice', '3',60),
-        (10,'Orange Juice', '3',60);
+        INSERT INTO inventory VALUES
+        (1, 'Kit-Kat', 1, 50),
+        (2, 'Godiva', 1, 500),
+        (3, 'Lindt', 1, 500),
+        (4, 'Toblerone', 1, 250),
+        (5, 'Gummy Bears', 2, 55),
+        (6, 'Swedish Fish', 2, 55),
+        (7, 'Gummy Worms', 2, 55),
+        (8, 'Sour Gummy Worms', 2, 60),
+        (9, 'Fruit Leather', 3, 60),
+        (10, 'Goldfish', 3, 60),
+        (11, 'Doritos', 3, 60),
+        (12, 'Smarties', 3, 50);
     """
 
     cur = conn.cursor()
@@ -44,13 +46,13 @@ def insert_to_menu(conn):
     conn.commit()
     return cur.lastrowid
 
-def insert_to_categories(conn):
+def insert_to_category(conn):
 
     sql = """
-        INSERT INTO categories VALUES
-	    (1, 'tea'),
-        (2, 'coffee'),
-        (3, 'juice');
+        INSERT INTO category VALUES
+	    (1, 'chocolate'),
+        (2, 'gummy'),
+        (3, 'other');
     """
     cur = conn.cursor()
     cur.execute(sql)
@@ -60,12 +62,13 @@ def insert_to_categories(conn):
 def insert_to_customers(conn):
 
     sql = """
-        INSERT INTO customers VALUES
-	    (1, 'Mark', 'Lee','Bangkok'),
-        (2, 'Johnny', 'Suh', 'Phuket'),
-        (3, 'Jennie', 'Kim', 'Chiangmai'),
-        (4, 'Jeno', 'Lee', 'Bangkok'),
-        (5, 'Karina', 'Yoo', 'Chiangmai');
+        INSERT INTO customer VALUES
+	    (1, 'Mark', 'Lee','marklee@gmail.com'),
+        (2, 'Johnny', 'Suh', 'suhjon@yahoo.com'),
+        (3, 'Jennie', 'Kim', 'kenniejim@gmail.com'),
+        (4, 'Jeno', 'Lee', 'lee123@bing.com'),
+        (5, 'Karina', 'Yoo', 'karinayoo@gmail.com'),
+        (6, 'Cordell', 'Thompson', 'cordy@gmail.com');
     """
     cur = conn.cursor()
     cur.execute(sql)
@@ -75,9 +78,9 @@ def insert_to_customers(conn):
 def insert_to_employees(conn):
     sql = """
          INSERT INTO employee VALUES
-	        (1, 'Nicolene', 'Jones','2020-09-01','Bangkok'),
-            (2, 'Anna', 'Smith', '2021-12-01', 'Phuket'),
-            (3, 'Jessica', 'Brown', '2020-08-01', 'Chiangmai');
+	        (1, 'Nicolene', 'Jones','2020-09-01'),
+            (2, 'Anna', 'Smith', '2021-12-01'),
+            (3, 'Jessica', 'Brown', '2020-08-01');
     """
     cur = conn.cursor()
     cur.execute(sql)
@@ -85,29 +88,28 @@ def insert_to_employees(conn):
     return cur.lastrowid
 
 def insert_to_orders(conn):
-
     sql = """
-        INSERT INTO Orders VALUES
-	    (1, '2022-08-01',1,1,4,'Grabfood',1),
-        (2, '2022-08-01',6,2,1,'Lineman',1),
-	    (3, '2022-08-02',2,2,2,'Robinhood',2),
-	    (4, '2022-08-03',3,1,5,'Grabfood',3),
-	    (5, '2022-08-04',1,1,2,'Robinhood',2),
-	    (6, '2022-08-05',6,1,4,'Grabfood',1),
-	    (7, '2022-08-05',10,1,3,'Grabfood',3),
-	    (8, '2022-08-09',3,2,4,'Grabfood',1),
-	    (9, '2022-08-13',5,3,1,'Lineman',1),
-	    (10, '2022-08-13',6,1,2,'Robinhood',2),
-	    (11, '2022-08-13',7,1,5,'Lineman',3),
-	    (12, '2022-08-14',4,1,5,'Grabfood',3),
-	    (13, '2022-08-15',5,2,3,'Grabfood',3),
-	    (14, '2022-08-15',10,1,2,'Robinhood',2),
-	    (15, '2022-08-18',5,2,1,'Lineman',1),
-	    (16, '2022-08-20',6,1,2,'Robinhood',2),
-	    (17, '2022-08-21',4,2,1,'Lineman',1),
-	    (18, '2022-08-25',5,1,5,'Grabfood',3),
-	    (19, '2022-08-26',5,3,3,'Grabfood',3),
-	    (20, '2022-08-29',6,2,4,'Grabfood',1);
+        INSERT INTO orders VALUES
+	    (1, 1, '2022-08-01', 1000, 2, 2, 1),
+        (2, 4, '2022-08-01', 55, 5, 1, 3),
+	    (3, 6, '2022-08-02', 5000, 3, 10, 2),
+	    (4, 2, '2022-08-03', 50, 1, 1, 3),
+	    (5, 4, '2022-08-04', 120, 11, 2, 2),
+	    (6, 3, '2022-08-05', 50, 12, 1, 1),
+	    (7, 1, '2022-08-05', 180, 10, 3, 3),
+	    (8, 1, '2022-08-09', 300, 1, 6, 1),
+	    (9, 1, '2022-08-13', 60, 8, 1, 2),
+	    (10, 3, '2022-08-13', 500, 4, 2, 2),
+	    (11, 5, '2022-08-13', 165, 5, 3, 1),
+	    (12, 6, '2022-08-14', 10000, 3, 20, 3),
+	    (13, 2, '2022-08-15', 55, 6, 1, 3),
+	    (14, 3, '2022-08-15', 60, 9, 1, 2),
+	    (15, 1, '2022-08-18', 55, 7, 1, 1),
+	    (16, 2, '2022-08-20', 60, 8, 1, 2),
+	    (17, 4, '2022-08-21', 180, 9, 3, 3),
+	    (18, 4, '2022-08-25', 360, 9, 6, 3),
+	    (19, 4, '2022-08-26', 720, 9, 12, 3),
+	    (20, 1, '2022-08-29', 500, 2, 1, 2);
     """
     cur = conn.cursor()
     cur.execute(sql)
@@ -120,10 +122,10 @@ def main():
     # create a database connection
     conn = create_connection(database)
     create_table(conn, sql_create_category_table)
-    insert_to_categories(conn)
-    create_table(conn, sql_create_menu_table)
-    insert_to_menu(conn)
-    create_table(conn, sql_create_customers_table)
+    insert_to_category(conn)
+    create_table(conn, sql_create_inventory_table)
+    insert_to_inventory(conn)
+    create_table(conn, sql_create_customer_table)
     insert_to_customers(conn)
     create_table(conn, sql_create_employee_table)
     insert_to_employees(conn)
